@@ -1,0 +1,45 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 100vh;
+
+  font-size: calc(10px + 2vmin);
+  text-align: center;
+
+  color: white;
+  background-color: #282c34;
+}
+
+.form-check-input:focus,
+.form-check-input:active {
+  box-shadow: none;
+}
+
+.form-check-input:hover {
+  cursor: pointer;
+}
+
+.clear-button {
+  padding: .375rem .75rem;
+  border: none;
+  border-radius: .375rem;
+
+  font-size: 1rem;
+
+  color: #ffffff;
+  background-color: #198754;
+
+  transition: background-color .15s ease-in-out;
+}
+
+.clear-button:hover:not(:disabled) {
+  background-color: #157347;
+}
+
+.clear-button:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
