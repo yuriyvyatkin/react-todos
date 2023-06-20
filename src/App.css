@@ -35,13 +35,13 @@
   font-size: 1.3rem;
 
   color: #ffffff;
-  background-color: #198754;
+  background-color: #31c27e;
 
   transition: background-color .15s ease-in-out;
 }
 
 .clear-button:hover:not(:disabled) {
-  background-color: #157347;
+  background-color: #1e9e62;
 }
 
 .clear-button:disabled {

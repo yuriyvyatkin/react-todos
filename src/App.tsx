@@ -9,6 +9,7 @@ import {
   CloseButton,
   Nav,
 } from 'react-bootstrap';
+import getNoun from "./utils/getNoun";
 import './App.css';
 
 interface Task {
@@ -143,7 +144,7 @@ function App() {
         <div className="ms-auto d-inline-block position-relative">
           <CloseButton
             className="close-button position-absolute"
-            style={{ top: '0px', right: '0px', width: '5px' }}
+            style={{ top: '0px', right: '5px', width: '5px' }}
             onClick={() => handleTaskDelete(task.id)}
           />
         </div>
@@ -210,9 +211,7 @@ function App() {
                   {renderTasks()}
                 </div>
                 <div className="task-count mt-2">
-                  {`${activeTaskCount} item${
-                    activeTaskCount !== 1 ? 's' : ''
-                  } left`}
+                  {`${activeTaskCount} ${getNoun(activeTaskCount, 'задача', 'задачи', 'задач')} ${getNoun(activeTaskCount, 'осталась', 'остались', 'осталось')}`}
                 </div>
                 <button
                   className="clear-button"
