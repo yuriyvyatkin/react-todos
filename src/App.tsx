@@ -18,9 +18,9 @@ interface Task {
 }
 
 const defaultTasks: Task[] = [
-  { id: 1, name: 'Первая задача', completed: false },
-  { id: 2, name: 'Вторая задача', completed: false },
-  { id: 3, name: 'Третья задача', completed: false },
+  { id: 1, name: '📅 Запланировать встречу', completed: false },
+  { id: 2, name: '🧹 Убраться дома', completed: false },
+  { id: 3, name: '🎯 Разработать план', completed: false },
 ];
 
 const storedTasksJSON = localStorage.getItem('tasks');
@@ -110,7 +110,7 @@ function App() {
     }
 
     if (filteredTasks.length === 0) {
-      return <span className="d-inline-block text-secondary mb-3">Здесь ничего нет...</span>;
+      return <span className="d-inline-block text-secondary mb-3">Здесь ничего нет... 🤷‍♂️</span>;
     }
 
     return filteredTasks.map((task) => (
@@ -135,7 +135,7 @@ function App() {
                 : ''
             }`}
             htmlFor={`task-checkbox-${task.id}`}
-            style={{ bottom: '2.5px' }}
+            style={{ bottom: '2.5px', overflowWrap: 'anywhere', paddingRight: '25px' }}
           >
             {task.name}
           </label>
