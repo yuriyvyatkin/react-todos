@@ -18,9 +18,9 @@ interface Task {
 }
 
 const defaultTasks: Task[] = [
-  { id: 1, name: 'Какой-то текст', completed: false },
-  { id: 2, name: 'Прекрасный кот 🐈', completed: false },
-  { id: 3, name: 'Покрытие тестами', completed: false },
+  { id: 1, name: 'Первая задача', completed: false },
+  { id: 2, name: 'Вторая задача', completed: false },
+  { id: 3, name: 'Третья задача', completed: false },
 ];
 
 const storedTasksJSON = localStorage.getItem('tasks');
@@ -110,7 +110,7 @@ function App() {
     }
 
     if (filteredTasks.length === 0) {
-      return <span className="d-inline-block text-secondary mb-3">Nothing here...</span>;
+      return <span className="d-inline-block text-secondary mb-3">Здесь ничего нет...</span>;
     }
 
     return filteredTasks.map((task) => (
@@ -164,7 +164,7 @@ function App() {
                   <FormControl
                     className="form-control add-task"
                     type="text"
-                    placeholder="New Task..."
+                    placeholder="Новая задача..."
                     value={inputValue}
                     onChange={handleInputChange}
                     autoFocus
@@ -180,7 +180,7 @@ function App() {
                       active={activeTab === 'all'}
                       onClick={() => handleNavItemClick('all')}
                     >
-                      All
+                      Все
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
@@ -189,7 +189,7 @@ function App() {
                       active={activeTab === 'active'}
                       onClick={() => handleNavItemClick('active')}
                     >
-                      Active
+                      Активные
                     </Nav.Link>
                   </Nav.Item>
                   <Nav.Item>
@@ -198,7 +198,7 @@ function App() {
                       active={activeTab === 'completed'}
                       onClick={() => handleNavItemClick('completed')}
                     >
-                      Completed
+                      Завершённые
                     </Nav.Link>
                   </Nav.Item>
                 </Nav>
@@ -220,7 +220,7 @@ function App() {
                   onClick={clearCompletedTasks}
                   disabled={activeTaskCount === tasks.length}
                 >
-                  Clear completed
+                  Удалить завершённые
                 </button>
               </Card.Body>
             </Card>
