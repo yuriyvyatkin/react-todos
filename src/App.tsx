@@ -10,6 +10,7 @@ import {
   Nav,
 } from 'react-bootstrap';
 import getNoun from "./utils/getNoun";
+import Slug from "./components/Slug";
 import './App.css';
 
 interface Task {
@@ -111,7 +112,7 @@ function App() {
     }
 
     if (filteredTasks.length === 0) {
-      return <span className="d-inline-block text-secondary mb-3">Здесь ничего нет... 🤷‍♂️</span>;
+      return <Slug />;
     }
 
     return filteredTasks.map((task) => (
