@@ -1,4 +1,4 @@
-import getNoun from '@/utils/getNoun';
+import getNoun from '../utils/getNoun';
 
 interface CounterProps {
   activeTasksCount: number;

@@ -1,4 +1,4 @@
-import { TaskItem } from '@/components/Tasks';
+import { TaskItem } from '../Tasks';
 import Checkbox from './Checkbox';
 import CloseButton from './CloseButton';
 import Label from './Label';
