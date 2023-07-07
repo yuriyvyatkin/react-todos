@@ -1,8 +1,6 @@
-interface LabelProps {
-  id: number;
-  name: string;
-  completed: boolean;
-}
+import { TaskItem } from '../Tasks';
+
+interface LabelProps extends TaskItem {}
 
 function Label({ id, name, completed }: LabelProps) {
   return (

@@ -6,12 +6,10 @@ import {
   Card,
   Form,
   FormControl,
-  CloseButton,
   Nav,
 } from 'react-bootstrap';
 import getNoun from './utils/getNoun';
-import Task from './components/Task';
-import Slug from './components/Slug';
+import Tasks from './components/Tasks';
 import './App.css';
 
 interface Task {
@@ -103,30 +101,6 @@ function App() {
     setTasks(updatedTasks);
   };
 
-  const renderTasks = () => {
-    let filteredTasks: Task[] = tasks;
-
-    if (activeTab === 'active') {
-      filteredTasks = tasks.filter((task) => !task.completed);
-    } else if (activeTab === 'completed') {
-      filteredTasks = tasks.filter((task) => task.completed);
-    }
-
-    if (filteredTasks.length === 0) {
-      return <Slug />;
-    }
-
-    return filteredTasks.map(({ id, name, completed }) => (
-      <Task
-        id={id}
-        name={name}
-        completed={completed}
-        checkboxChangeHandler={handleCheckboxChange}
-        taskDeleteHandler={handleTaskDelete}
-      />
-    ));
-  };
-
   const activeTaskCount = tasks.filter((task) => !task.completed).length;
 
   return (
@@ -187,7 +161,12 @@ function App() {
                   style={{ maxHeight: '300px', overflowY: 'auto' }}
                   ref={todoListRef}
                 >
-                  {renderTasks()}
+                  <Tasks
+                    tasks={tasks}
+                    activeTab={activeTab}
+                    checkboxChangeHandler={handleCheckboxChange}
+                    taskDeleteHandler={handleTaskDelete}
+                  />
                 </div>
                 <div className="task-count mt-2">
                   {`${activeTaskCount} ${getNoun(

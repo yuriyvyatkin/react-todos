@@ -1,11 +1,9 @@
 import Checkbox from './Checkbox';
 import Label from './Label';
 import CloseButton from './CloseButton';
+import { TaskItem } from "../Tasks";
 
-interface TaskProps {
-  id: number;
-  name: string;
-  completed: boolean;
+interface TaskProps extends TaskItem {
   checkboxChangeHandler: (id: number) => void;
   taskDeleteHandler: (id: number) => void;
 }
