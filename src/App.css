@@ -17,13 +17,25 @@
   font-size: 26px;
 }
 
-.form-check-input:focus,
-.form-check-input:active {
+.task__checkbox:focus,
+.task__checkbox:active {
   box-shadow: none;
 }
 
-.form-check-input:hover {
+.task__checkbox:hover {
   cursor: pointer;
+}
+
+.task__label {
+  bottom: 2.5px;
+  overflow-wrap: anywhere;
+  padding-right: 25px;
+}
+
+.todos .close-button {
+  top: 0px;
+  right: 5px;
+  width: 5px;
 }
 
 .clear-button {

@@ -2,81 +2,95 @@ import { render, fireEvent, screen } from '@testing-library/react';
 import App from './App';
 
 const createTask = (taskName: string) => {
-  const input = screen.getByPlaceholderText('New Task...') as HTMLInputElement;
-  fireEvent.change(input, { target: { value: taskName } });
-  const form = input.form;
+  const input = screen.queryByTestId('input') as HTMLInputElement;
 
-  if (form) {
-    fireEvent.submit(form);
+  if (input && input.form) {
+    fireEvent.change(input, { target: { value: taskName } });
+    fireEvent.submit(input.form);
+
+    return true;
   }
 
-  return true;
+  return false;
 };
 
 const markLastCheckbox = () => {
-  const taskCheckboxes = screen.getAllByRole('checkbox');
-  const lastTaskCheckbox = taskCheckboxes[taskCheckboxes.length - 1] as HTMLInputElement;
+  const taskCheckboxes = screen.queryAllByTestId('task-checkbox');
 
-  fireEvent.click(lastTaskCheckbox);
+  if (taskCheckboxes.length) {
+    const lastTaskCheckbox = taskCheckboxes[taskCheckboxes.length - 1];
 
-  return true;
+    fireEvent.click(lastTaskCheckbox);
+
+    return true;
+  }
+
+  return false;
 };
+
+const testTaskName = 'Новая задача';
 
 test('добавляет задачу по нажатию клавиши Enter', () => {
   render(<App />);
-  expect(createTask('Новая задача')).toBe(true);
+  expect(createTask(testTaskName)).toBe(true);
 
-  const addedTask = screen.getByText('Новая задача');
+  const addedTask = screen.getByText(testTaskName);
 
   expect(addedTask).toBeInTheDocument();
 });
 
-test('помечает задачу как выполненную при изменении флажка', () => {
+test('помечает задачу как выполненную при отметке чек-бокса', () => {
   render(<App />);
-  createTask('Новая задача');
+  expect(createTask(testTaskName)).toBe(true);
   expect(markLastCheckbox()).toBe(true);
 
-  const taskLabels = screen.queryAllByText('Новая задача', { selector: '.form-check-label' });
-  const taskLabel = taskLabels[taskLabels.length - 1];
+  const taskLabel = screen.queryByText(testTaskName);
 
   expect(taskLabel).toHaveClass('text-decoration-line-through');
   expect(taskLabel).toHaveClass('text-secondary');
 });
 
-test('фильтрует задачи по вкладкам "All", "Active" и "Completed"', () => {
+test('фильтрует задачи по спискам "Все", "Активные" и "Завершённые"', () => {
   render(<App />);
-  createTask('Новая задача');
-  createTask('Новая задача');
+  expect(createTask(testTaskName)).toBe(true);
+  expect(createTask(testTaskName)).toBe(true);
   expect(markLastCheckbox()).toBe(true);
 
-  const activeTabButton = screen.getByText('Active');
-  fireEvent.click(activeTabButton);
-  const activeTasks = screen.getAllByRole('checkbox');
+  const activeTodosButton = screen.queryByTestId('active');
+  if (activeTodosButton) {
+    fireEvent.click(activeTodosButton);
+  }
+  const activeTasks = screen.queryAllByText(testTaskName);
 
-  expect(activeTasks.length).toBeGreaterThan(0);
+  expect(activeTasks.length).toBe(1);
 
-  const completedTabButton = screen.getByText('Completed');
-  fireEvent.click(completedTabButton);
-  const completedTasks = screen.getAllByRole('checkbox');
+  const completedTodosButton = screen.queryByTestId('completed');
+  if (completedTodosButton) {
+    fireEvent.click(completedTodosButton);
+  }
+  const completedTasks = screen.queryAllByText(testTaskName);
 
-  expect(completedTasks.length).toBeGreaterThan(0);
+  expect(completedTasks.length).toBe(1);
 
-  const allTabButton = screen.getByText('All');
-  fireEvent.click(allTabButton);
-  const allTasks = screen.getAllByRole('checkbox');
+  const allTodosButton = screen.queryByTestId('all');
+  if (allTodosButton) {
+    fireEvent.click(allTodosButton);
+  }
+  const allTasks = screen.queryAllByText(testTaskName);
 
-  expect(allTasks.length).toBeGreaterThan(0);
+  expect(allTasks.length).toBe(2);
 });
 
-test('очищает выполненные задачи по нажатию кнопки "Clear completed"', () => {
+test('очищает выполненные задачи по нажатию кнопки "Удалить завершённые"', () => {
   render(<App />);
-  createTask('Новая задача');
+  expect(createTask(testTaskName)).toBe(true);
   expect(markLastCheckbox()).toBe(true);
 
-  const clearButton = screen.getByText('Clear completed');
-  fireEvent.click(clearButton);
-  const completedTasks = screen.queryAllByTestId('todo-item');
+  const clearButton = screen.queryByTestId('clear-button');
+  if (clearButton) {
+    fireEvent.click(clearButton);
+  }
+  const completedTask = screen.queryByText(testTaskName);
 
-  expect(completedTasks.length).toBe(0);
-  expect(screen.queryByText('Create theme')).toBeNull();
+  expect(completedTask).toBeNull();
 });

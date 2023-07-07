@@ -9,8 +9,8 @@ import {
   CloseButton,
   Nav,
 } from 'react-bootstrap';
-import getNoun from "./utils/getNoun";
-import Slug from "./components/Slug";
+import getNoun from './utils/getNoun';
+import Slug from './components/Slug';
 import './App.css';
 
 interface Task {
@@ -117,32 +117,31 @@ function App() {
 
     return filteredTasks.map((task) => (
       <div
-        className={`todo-item d-flex mb-3 px-1 ${
+        className={`todos__task d-flex mb-3 px-1 ${
           task.completed ? 'completed' : ''
         }`}
         key={task.id}
       >
-        <div className="form-check">
+        <div className="task__wrapper form-check">
           <input
             id={`task-checkbox-${task.id}`}
-            className="form-check-input"
+            className="task__checkbox form-check-input"
             type="checkbox"
             checked={task.completed}
             onChange={() => handleCheckboxChange(task.id)}
+            data-testid='task-checkbox'
           />
           <label
-            className={`form-check-label text-start position-relative ${
-              task.completed
-                ? 'text-decoration-line-through text-secondary'
-                : ''
+            className={`task__label text-start position-relative ${
+              task.completed && 'text-decoration-line-through text-secondary'
             }`}
             htmlFor={`task-checkbox-${task.id}`}
-            style={{ bottom: '2.5px', overflowWrap: 'anywhere', paddingRight: '25px' }}
+            data-testid='task-label'
           >
             {task.name}
           </label>
         </div>
-        <div className="ms-auto d-inline-block position-relative">
+        <div className="close-button-wrapper ms-auto d-inline-block position-relative">
           <CloseButton
             className="close-button position-absolute"
             style={{ top: '0px', right: '5px', width: '5px' }}
@@ -157,7 +156,7 @@ function App() {
 
   return (
     <div className="App">
-      <Container style={{ maxWidth: '500px' }}>
+      <Container className="todos" style={{ maxWidth: '500px' }}>
         <Row>
           <Col md={12}>
             <Card bg="light" text="dark">
@@ -170,6 +169,7 @@ function App() {
                     value={inputValue}
                     onChange={handleInputChange}
                     autoFocus
+                    data-testid='input'
                   />
                 </Form>
                 <Nav
@@ -181,6 +181,7 @@ function App() {
                       href="#"
                       active={activeTab === 'all'}
                       onClick={() => handleNavItemClick('all')}
+                      data-testid='all'
                     >
                       Все
                     </Nav.Link>
@@ -190,6 +191,7 @@ function App() {
                       href="#"
                       active={activeTab === 'active'}
                       onClick={() => handleNavItemClick('active')}
+                      data-testid='active'
                     >
                       Активные
                     </Nav.Link>
@@ -199,6 +201,7 @@ function App() {
                       href="#"
                       active={activeTab === 'completed'}
                       onClick={() => handleNavItemClick('completed')}
+                      data-testid='completed'
                     >
                       Завершённые
                     </Nav.Link>
@@ -212,13 +215,24 @@ function App() {
                   {renderTasks()}
                 </div>
                 <div className="task-count mt-2">
-                  {`${activeTaskCount} ${getNoun(activeTaskCount, 'задача', 'задачи', 'задач')} ${getNoun(activeTaskCount, 'осталась', 'остались', 'осталось')}`}
+                  {`${activeTaskCount} ${getNoun(
+                    activeTaskCount,
+                    'задача',
+                    'задачи',
+                    'задач',
+                  )} ${getNoun(
+                    activeTaskCount,
+                    'осталась',
+                    'остались',
+                    'осталось',
+                  )}`}
                 </div>
                 <button
                   className="clear-button"
                   type="button"
                   onClick={clearCompletedTasks}
                   disabled={activeTaskCount === tasks.length}
+                  data-testid='clear-button'
                 >
                   Удалить завершённые
                 </button>
