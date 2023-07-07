@@ -1,11 +1,13 @@
+import { TaskItem } from '@/components/Tasks';
 import Checkbox from './Checkbox';
-import Label from './Label';
 import CloseButton from './CloseButton';
-import { TaskItem } from "../Tasks";
+import Label from './Label';
 
 interface TaskProps extends TaskItem {
   checkboxChangeHandler: (id: number) => void;
-  taskDeleteHandler: (id: number) => void;
+  taskDeletionHandler: (id: number) => void;
+  checkboxTestId: string;
+  labelTestId: string;
 }
 
 function Task({
@@ -13,7 +15,9 @@ function Task({
   name,
   completed,
   checkboxChangeHandler,
-  taskDeleteHandler,
+  taskDeletionHandler,
+  checkboxTestId,
+  labelTestId,
 }: TaskProps) {
   return (
     <div className={`todos__task d-flex mb-3 px-1 ${completed && 'completed'}`}>
@@ -22,10 +26,16 @@ function Task({
           id={id}
           completed={completed}
           checkboxChangeHandler={checkboxChangeHandler}
+          checkboxTestId={checkboxTestId}
         />
-        <Label id={id} name={name} completed={completed} />
+        <Label
+          id={id}
+          name={name}
+          completed={completed}
+          labelTestId={labelTestId}
+        />
       </div>
-      <CloseButton id={id} taskDeleteHandler={taskDeleteHandler} />
+      <CloseButton id={id} taskDeletionHandler={taskDeletionHandler} />
     </div>
   );
 }

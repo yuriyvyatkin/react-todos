@@ -1,22 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Form,
-  FormControl,
-  Nav,
-} from 'react-bootstrap';
-import getNoun from './utils/getNoun';
-import Tasks from './components/Tasks';
+import React, { useEffect, useRef, useState } from 'react';
+import { Card, Col, Container, Row } from 'react-bootstrap';
 import './App.css';
-
-interface Task {
-  id: number;
-  name: string;
-  completed: boolean;
-}
+import './assets/normalize.css';
+import ClearButton from './components/ClearButton';
+import Counter from './components/Counter';
+import Input from './components/Input';
+import NavBar from './components/NavBar';
+import Tasks, { TaskItem as Task } from './components/Tasks';
 
 const defaultTasks: Task[] = [
   { id: 1, name: '📅 Запланировать встречу', completed: false },
@@ -40,7 +30,8 @@ function App() {
     'all',
   );
   const [inputValue, setInputValue] = useState('');
-  const todoListRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const tasksRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -48,6 +39,11 @@ function App() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+  };
+
+  const handleInputReset = () => {
+    setInputValue('');
+    inputRef.current?.focus();
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,8 +55,16 @@ function App() {
       return;
     }
 
+    let lastId = 0;
+
+    if (tasks.length) {
+      lastId = tasks[tasks.length - 1].id;
+    }
+
+    const newId = lastId + 1;
+
     const newTask: Task = {
-      id: tasks.length + 1,
+      id: newId,
       name: inputValue,
       completed: false,
     };
@@ -69,14 +73,15 @@ function App() {
     setInputValue('');
 
     setTimeout(() => {
-      if (todoListRef.current) {
-        todoListRef.current.scrollTop = todoListRef.current.scrollHeight;
+      if (tasksRef.current) {
+        tasksRef.current.scrollTop = tasksRef.current.scrollHeight;
       }
     }, 10);
   };
 
-  const handleTaskDelete = (taskId: number) => {
+  const handleTaskDeletion = (taskId: number) => {
     const updatedTasks = tasks.filter((task) => task.id !== taskId);
+
     setTasks(updatedTasks);
   };
 
@@ -101,95 +106,48 @@ function App() {
     setTasks(updatedTasks);
   };
 
-  const activeTaskCount = tasks.filter((task) => !task.completed).length;
+  const activeTasksCount = tasks.filter((task) => !task.completed).length;
 
   return (
     <div className="App">
-      <Container className="todos" style={{ maxWidth: '500px' }}>
+      <Container className="todos">
         <Row>
           <Col md={12}>
-            <Card bg="light" text="dark">
+            <Card className="shadow" bg="light" text="dark">
               <Card.Body>
-                <Form onSubmit={handleSubmit}>
-                  <FormControl
-                    className="form-control add-task"
-                    type="text"
-                    placeholder="Новая задача..."
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    autoFocus
-                    data-testid="input"
-                  />
-                </Form>
-                <Nav
-                  className="todo-nav mt-4 d-flex justify-content-center"
-                  variant="pills"
-                >
-                  <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeTab === 'all'}
-                      onClick={() => handleNavItemClick('all')}
-                      data-testid="all"
-                    >
-                      Все
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeTab === 'active'}
-                      onClick={() => handleNavItemClick('active')}
-                      data-testid="active"
-                    >
-                      Активные
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link
-                      href="#"
-                      active={activeTab === 'completed'}
-                      onClick={() => handleNavItemClick('completed')}
-                      data-testid="completed"
-                    >
-                      Завершённые
-                    </Nav.Link>
-                  </Nav.Item>
-                </Nav>
-                <div
-                  className="todo-list mt-4 px-1"
-                  style={{ maxHeight: '300px', overflowY: 'auto' }}
-                  ref={todoListRef}
-                >
-                  <Tasks
-                    tasks={tasks}
-                    activeTab={activeTab}
-                    checkboxChangeHandler={handleCheckboxChange}
-                    taskDeleteHandler={handleTaskDelete}
-                  />
-                </div>
-                <div className="task-count mt-2">
-                  {`${activeTaskCount} ${getNoun(
-                    activeTaskCount,
-                    'задача',
-                    'задачи',
-                    'задач',
-                  )} ${getNoun(
-                    activeTaskCount,
-                    'осталась',
-                    'остались',
-                    'осталось',
-                  )}`}
-                </div>
-                <button
-                  className="clear-button"
-                  type="button"
-                  onClick={clearCompletedTasks}
-                  disabled={activeTaskCount === tasks.length}
-                  data-testid="clear-button"
-                >
-                  Удалить завершённые
-                </button>
+                <Input
+                  value={inputValue}
+                  submitHandler={handleSubmit}
+                  inputChangeHandler={handleInputChange}
+                  inputResetHandler={handleInputReset}
+                  placeholder="Новая задача..."
+                  inputRef={inputRef}
+                  testId="input"
+                />
+                <NavBar
+                  activeTab={activeTab}
+                  data={[
+                    { name: 'all', content: 'Все' },
+                    { name: 'active', content: 'Активные' },
+                    { name: 'completed', content: 'Завершённые' },
+                  ]}
+                  navItemClickHandler={handleNavItemClick}
+                />
+                <Tasks
+                  tasks={tasks}
+                  activeTab={activeTab}
+                  checkboxChangeHandler={handleCheckboxChange}
+                  taskDeletionHandler={handleTaskDeletion}
+                  tasksRef={tasksRef}
+                  checkboxTestId="task-checkbox"
+                  labelTestId="task-label"
+                />
+                <Counter activeTasksCount={activeTasksCount} />
+                <ClearButton
+                  clickHandler={clearCompletedTasks}
+                  disabled={activeTasksCount === tasks.length}
+                  testId="clear-button"
+                />
               </Card.Body>
             </Card>
           </Col>

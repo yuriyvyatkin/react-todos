@@ -1,13 +1,17 @@
+import './Checkbox.css';
+
 interface CheckboxProps {
   id: number;
   completed: boolean;
   checkboxChangeHandler: (id: number) => void;
+  checkboxTestId: string;
 }
 
 function Checkbox({
   id,
   completed,
   checkboxChangeHandler: handleCheckboxChange,
+  checkboxTestId
 }: CheckboxProps) {
   return (
     <input
@@ -16,7 +20,7 @@ function Checkbox({
       type="checkbox"
       checked={completed}
       onChange={() => handleCheckboxChange(id)}
-      data-testid="task-checkbox"
+      data-testid={checkboxTestId}
     />
   );
 }

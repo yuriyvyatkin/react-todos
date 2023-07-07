@@ -1,0 +1,7 @@
+.task__label {
+  bottom: 2.5px;
+
+  padding-right: 25px;
+
+  overflow-wrap: anywhere;
+}

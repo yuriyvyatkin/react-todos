@@ -1,0 +1,8 @@
+.task__checkbox:focus,
+.task__checkbox:active {
+  box-shadow: none;
+}
+
+.task__checkbox:hover {
+  cursor: pointer;
+}

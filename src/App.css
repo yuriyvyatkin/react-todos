@@ -10,53 +10,17 @@
   text-align: center;
 
   color: white;
-  background-color: #282c34;
+  background-color: #ee7639;
 }
 
-.add-task {
-  font-size: 26px;
+.todos {
+  max-width: 400px;
 }
 
-.task__checkbox:focus,
-.task__checkbox:active {
-  box-shadow: none;
+.input {
+  font-size: 23px;
 }
 
-.task__checkbox:hover {
-  cursor: pointer;
-}
-
-.task__label {
-  bottom: 2.5px;
-  overflow-wrap: anywhere;
-  padding-right: 25px;
-}
-
-.todos .close-button {
-  top: 0px;
-  right: 5px;
-  width: 5px;
-}
-
-.clear-button {
-  margin-top: 10px;
-  padding: .375rem .75rem;
-  border: none;
-  border-radius: .375rem;
-
-  font-size: 1.3rem;
-
-  color: #ffffff;
-  background-color: #31c27e;
-
-  transition: background-color .15s ease-in-out;
-}
-
-.clear-button:hover:not(:disabled) {
-  background-color: #1e9e62;
-}
-
-.clear-button:disabled {
-  opacity: .45;
-  cursor: not-allowed;
+.input::placeholder {
+  color: #707070;
 }

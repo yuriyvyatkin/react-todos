@@ -1,0 +1,8 @@
+.input-clear-button {
+  top: 25px;
+  right: 25px;
+}
+
+.input-clear-button:focus {
+  box-shadow: none;
+}
