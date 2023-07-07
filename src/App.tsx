@@ -10,6 +10,7 @@ import {
   Nav,
 } from 'react-bootstrap';
 import getNoun from './utils/getNoun';
+import Task from './components/Task';
 import Slug from './components/Slug';
 import './App.css';
 
@@ -115,40 +116,14 @@ function App() {
       return <Slug />;
     }
 
-    return filteredTasks.map((task) => (
-      <div
-        className={`todos__task d-flex mb-3 px-1 ${
-          task.completed ? 'completed' : ''
-        }`}
-        key={task.id}
-      >
-        <div className="task__wrapper form-check">
-          <input
-            id={`task-checkbox-${task.id}`}
-            className="task__checkbox form-check-input"
-            type="checkbox"
-            checked={task.completed}
-            onChange={() => handleCheckboxChange(task.id)}
-            data-testid='task-checkbox'
-          />
-          <label
-            className={`task__label text-start position-relative ${
-              task.completed && 'text-decoration-line-through text-secondary'
-            }`}
-            htmlFor={`task-checkbox-${task.id}`}
-            data-testid='task-label'
-          >
-            {task.name}
-          </label>
-        </div>
-        <div className="close-button-wrapper ms-auto d-inline-block position-relative">
-          <CloseButton
-            className="close-button position-absolute"
-            style={{ top: '0px', right: '5px', width: '5px' }}
-            onClick={() => handleTaskDelete(task.id)}
-          />
-        </div>
-      </div>
+    return filteredTasks.map(({ id, name, completed }) => (
+      <Task
+        id={id}
+        name={name}
+        completed={completed}
+        checkboxChangeHandler={handleCheckboxChange}
+        taskDeleteHandler={handleTaskDelete}
+      />
     ));
   };
 
@@ -169,7 +144,7 @@ function App() {
                     value={inputValue}
                     onChange={handleInputChange}
                     autoFocus
-                    data-testid='input'
+                    data-testid="input"
                   />
                 </Form>
                 <Nav
@@ -181,7 +156,7 @@ function App() {
                       href="#"
                       active={activeTab === 'all'}
                       onClick={() => handleNavItemClick('all')}
-                      data-testid='all'
+                      data-testid="all"
                     >
                       Все
                     </Nav.Link>
@@ -191,7 +166,7 @@ function App() {
                       href="#"
                       active={activeTab === 'active'}
                       onClick={() => handleNavItemClick('active')}
-                      data-testid='active'
+                      data-testid="active"
                     >
                       Активные
                     </Nav.Link>
@@ -201,7 +176,7 @@ function App() {
                       href="#"
                       active={activeTab === 'completed'}
                       onClick={() => handleNavItemClick('completed')}
-                      data-testid='completed'
+                      data-testid="completed"
                     >
                       Завершённые
                     </Nav.Link>
@@ -232,7 +207,7 @@ function App() {
                   type="button"
                   onClick={clearCompletedTasks}
                   disabled={activeTaskCount === tasks.length}
-                  data-testid='clear-button'
+                  data-testid="clear-button"
                 >
                   Удалить завершённые
                 </button>
