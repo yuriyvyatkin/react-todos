@@ -2,7 +2,7 @@
 
 **🛠️ Стек**
 
-React / React Hooks + TypeScript + React Bootstrap + Bootstrap + Jest
+React + TypeScript + React Bootstrap + Bootstrap + Jest + CRACO
 
 **💬 Основная информация о проекте**
 
