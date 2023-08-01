@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { TaskItem } from '../Tasks';
 import './Label.css';
 
@@ -19,4 +20,4 @@ function Label({ id, name, completed, labelTestId }: LabelProps) {
   );
 }
 
-export default Label;
+export default memo(Label);
