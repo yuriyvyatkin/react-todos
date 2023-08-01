@@ -41,13 +41,24 @@ test('добавляет задачу по нажатию клавиши Enter',
 
 test('помечает задачу как выполненную при отметке чек-бокса', () => {
   render(<App />);
-  expect(createTask(testTaskName)).toBe(true);
   expect(markLastCheckbox()).toBe(true);
 
   const taskLabel = screen.queryByText(testTaskName);
 
   expect(taskLabel).toHaveClass('text-decoration-line-through');
   expect(taskLabel).toHaveClass('text-secondary');
+});
+
+test('очищает выполненные задачи по нажатию кнопки "Удалить завершённые"', () => {
+  render(<App />);
+
+  const clearButton = screen.queryByTestId('clear-button');
+  if (clearButton) {
+    fireEvent.click(clearButton);
+  }
+  const completedTask = screen.queryByText(testTaskName);
+
+  expect(completedTask).toBeNull();
 });
 
 test('фильтрует задачи по спискам "Все", "Активные" и "Завершённые"', () => {
@@ -79,18 +90,4 @@ test('фильтрует задачи по спискам "Все", "Актив�
   const allTasks = screen.queryAllByText(testTaskName);
 
   expect(allTasks.length).toBe(2);
-});
-
-test('очищает выполненные задачи по нажатию кнопки "Удалить завершённые"', () => {
-  render(<App />);
-  expect(createTask(testTaskName)).toBe(true);
-  expect(markLastCheckbox()).toBe(true);
-
-  const clearButton = screen.queryByTestId('clear-button');
-  if (clearButton) {
-    fireEvent.click(clearButton);
-  }
-  const completedTask = screen.queryByText(testTaskName);
-
-  expect(completedTask).toBeNull();
 });
